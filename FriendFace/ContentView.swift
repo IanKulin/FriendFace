@@ -8,16 +8,53 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
-        }
-        .padding()
+
+    struct Response: Codable {
+        var users: [User]
     }
+
+    @State private var users = [User]()
+
+    var body: some View {
+        Text("Hello Ian")
+        List(users, id: \.id) { user in
+            VStack(alignment: .leading) {
+                Text(user.name)
+                    .font(.headline)
+                Text(user.company)
+            }
+        }
+        .task {
+            await fetchUsers()
+        }
+    }
+
+
+    func fetchUsers() async {
+        guard let url = URL(string: "https://www.hackingwithswift.com/samples/friendface.json") else {
+            print("Invalid URL")
+            return
+        }
+
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            do {
+                let decodedUsers = try JSONDecoder().decode([User].self, from: data)
+                users = decodedUsers
+            } catch {
+                print(error)
+                return
+            }
+
+        } catch {
+            print(error)
+            return
+        }
+
+    }
+
 }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
