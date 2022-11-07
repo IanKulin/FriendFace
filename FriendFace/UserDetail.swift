@@ -15,12 +15,22 @@ struct UserDetail: View {
     var body: some View {
         Form {
             Section {
-                Text(user.name)
-                    .font(.headline)
-                    .frame(maxWidth: .infinity, alignment: .center)
+                HStack {
+                    Text(user.name)
+                        .font(.headline)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                }
+            }
+            AsyncImage(
+                url: URL(string: "https://randomuser.me/api/portraits/women/\(nameHash).jpg"),
+                scale: 3
+            ) { image in image
+                    .resizable()
+                    .scaledToFit()
+            } placeholder: {
+                ProgressView()
             }
             Section {
-                Text(user.isActive ? "Active" : "Not active")
                 Text("Age: \(user.age)")
                 Text("Company: \(user.company)")
                 Text("email: \(user.email)")
@@ -32,6 +42,10 @@ struct UserDetail: View {
                 }
             }
         }
+    }
+
+    var nameHash: Int {
+        user.name.utf8.reduce(0) { $0 + Int($1) } % 100
     }
 }
 
