@@ -16,16 +16,22 @@ struct ContentView: View {
     @State private var users = [User]()
 
     var body: some View {
-        Text("Hello Ian")
-        List(users, id: \.id) { user in
-            VStack(alignment: .leading) {
-                Text(user.name)
-                    .font(.headline)
-                Text(user.company)
+        NavigationView {
+            List(users, id: \.id) { user in
+                NavigationLink(destination: UserDetail(user: user)) {
+                    VStack(alignment: .leading) {
+                        Text(user.name)
+                            .font(.headline)
+                        Text(user.isActive ? "Active" : "Not active")
+                    }
+                }
             }
-        }
-        .task {
-            await fetchUsers()
+            .task {
+                if users.isEmpty {
+                    await fetchUsers()
+                }
+            }
+            .navigationBarTitle("FriendFace")
         }
     }
 
