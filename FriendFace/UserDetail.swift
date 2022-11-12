@@ -28,7 +28,6 @@ extension View {
 struct UserDetail: View {
 
     let user: User
-    @State private var savedImage: UIImage?
 
     var body: some View {
         Form {
@@ -40,14 +39,11 @@ struct UserDetail: View {
                 }
             }
             AsyncImage(
-                url: URL(string: "https://randomuser.me/api/portraits/women/\(nameHash).jpg"),
+                url: URL(string: "https://randomuser.me/api/portraits/men/\(nameHash).jpg"),
                 scale: 3
             ) { image in image
                     .resizable()
                     .scaledToFit()
-                    .onAppear {
-                        savedImage = image.snapshot()
-                    }
             } placeholder: {
                 ProgressView()
             }
