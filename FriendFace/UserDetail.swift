@@ -57,6 +57,8 @@ struct UserDetail: View {
                 Text("Company: \(user.company)")
                 Text("email: \(user.email)")
                 Text("Address: \(user.address)")
+                Text("Registered: \(user.registered, style: .date)")
+
             }
             Section(header: Text("Friends")) {
                 List(user.friends, id: \.id) { friend in
