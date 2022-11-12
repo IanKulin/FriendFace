@@ -83,7 +83,7 @@ struct UserDetail_Previews: PreviewProvider {
             email: "alfordrodriguez@imkan.com",
             address: "907 Nelson Street, Cotopaxi, South Dakota, 5913",
             about: "Occaecat consequat elit …ion irure est deserunt.",
-            registered: "2015-11-10T01:47:18-00:00",
+            registered: Date(),
             tags: [],
             friends: [
                 Friend(id: "1", name: "Gale Prescot"),
