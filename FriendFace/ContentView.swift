@@ -33,29 +33,24 @@ struct ContentView: View {
 
 
     func fetchUsers() async {
+        // Don't re-fetch data if we already have it
+        guard users.isEmpty else {
+            print("Unneeded refetch attempt")
+            return
+        }
         guard let url = URL(string: "https://www.hackingwithswift.com/samples/friendface.json") else {
             print("Invalid URL")
             return
         }
-
         do {
+            let (data, _) = try await URLSession.shared.data(from: url)
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .iso8601
-
-            let (data, _) = try await URLSession.shared.data(from: url)
-            do {
-                let decodedUsers = try decoder.decode([User].self, from: data)
-                users = decodedUsers
-            } catch {
-                print(error)
-                return
-            }
-
+            users = try decoder.decode([User].self, from: data)
         } catch {
             print(error)
             return
         }
-
     }
 
 }
