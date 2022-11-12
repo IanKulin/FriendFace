@@ -9,10 +9,6 @@ import SwiftUI
 
 struct ContentView: View {
 
-    struct Response: Codable {
-        var users: [User]
-    }
-
     @State private var users = [User]()
 
     var body: some View {
@@ -45,7 +41,7 @@ struct ContentView: View {
         do {
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .iso8601
-            
+
             let (data, _) = try await URLSession.shared.data(from: url)
             do {
                 let decodedUsers = try decoder.decode([User].self, from: data)
