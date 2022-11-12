@@ -23,9 +23,7 @@ struct ContentView: View {
                 }
             }
             .task {
-                if users.isEmpty {
                     await fetchUsers()
-                }
             }
             .navigationBarTitle("FriendFace")
         }
