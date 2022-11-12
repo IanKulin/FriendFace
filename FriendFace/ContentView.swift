@@ -15,15 +15,17 @@ struct ContentView: View {
         NavigationView {
             List(users, id: \.id) { user in
                 NavigationLink(destination: UserDetail(user: user)) {
-                    VStack(alignment: .leading) {
+                    HStack {
+                        Circle()
+                            .fill(user.isActive ? .green : .red)
+                            .frame(width: 10)
                         Text(user.name)
                             .font(.headline)
-                        Text(user.isActive ? "Active" : "Not active")
                     }
                 }
             }
             .task {
-                    await fetchUsers()
+                await fetchUsers()
             }
             .navigationBarTitle("FriendFace")
         }
