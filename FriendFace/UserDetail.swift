@@ -4,6 +4,7 @@
 //
 //  Created by Ian Bailey on 7/11/2022.
 //
+// swiftlint:disable vertical_parameter_alignment_on_call indentation_width
 
 import SwiftUI
 
