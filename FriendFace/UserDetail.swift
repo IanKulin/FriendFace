@@ -8,9 +8,27 @@
 import SwiftUI
 
 
+extension View {
+    func snapshot() -> UIImage {
+        let controller = UIHostingController(rootView: self)
+        let view = controller.view
+
+        let targetSize = controller.view.intrinsicContentSize
+        view?.bounds = CGRect(origin: .zero, size: targetSize)
+        view?.backgroundColor = .clear
+
+        let renderer = UIGraphicsImageRenderer(size: targetSize)
+
+        return renderer.image { _ in
+            view?.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+    }
+}
+
 struct UserDetail: View {
 
     let user: User
+    @State private var savedImage: UIImage?
 
     var body: some View {
         Form {
@@ -27,9 +45,13 @@ struct UserDetail: View {
             ) { image in image
                     .resizable()
                     .scaledToFit()
+                    .onAppear {
+                        savedImage = image.snapshot()
+                    }
             } placeholder: {
                 ProgressView()
             }
+
             Section {
                 Text("Age: \(user.age)")
                 Text("Company: \(user.company)")
