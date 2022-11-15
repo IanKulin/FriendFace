@@ -26,6 +26,9 @@ struct ContentView: View {
             }
             .task {
                 await fetchUsers()
+                await MainActor.run {
+                    saveUsers()
+                }
             }
             .navigationBarTitle("FriendFace")
         }
@@ -52,7 +55,15 @@ struct ContentView: View {
             return
         }
     }
+    
+    
+    func saveUsers() {
+        // write the users data to Core Data relying on the constriants to not record
+        // duplicates
+        
+    }
 
+    
 }
 
 
