@@ -29,6 +29,44 @@ extension CachedUser {
     @NSManaged public var registered: Date?
     @NSManaged public var friends: NSSet?
 
+    var wrappedAbout: String {
+        about ?? "Unknown"
+    }
+
+    var wrappedAddress: String {
+        address ?? "Unknown"
+    }
+
+    var wrappedAge: Int16 {
+        age
+    }
+
+    var wrappedCompany: String {
+        company ?? "Unknown"
+    }
+
+    var wrappedEmail: String {
+        email ?? "Unknown"
+    }
+
+    func fromUser(_ user: User) {
+        about = user.about
+        address = user.address
+        age = user.age
+        company = user.company
+        email = user.email
+        isActive = user.isActive
+        name = user.name
+        registered = user.registered
+    }
+
+//    func loadFriends(_ friends: [Friend], moc: ) {
+//        for friend in friends {
+//            let cachedFriend = CachedFriend(context: moc)
+//            cachedFriend.name = friend.name
+//        }
+//    }
+
 }
 
 // MARK: Generated accessors for friends

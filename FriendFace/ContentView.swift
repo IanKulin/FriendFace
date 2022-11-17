@@ -9,6 +9,10 @@ import SwiftUI
 
 struct ContentView: View {
 
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(sortDescriptors: [])
+    var cachedUsers: FetchedResults<CachedUser>
+
     @State private var users = [User]()
 
     var body: some View {
@@ -60,6 +64,12 @@ struct ContentView: View {
     func saveUsers() {
         // write the users data to Core Data relying on the constriants to not record
         // duplicates
+        for user in users {
+            let cachedUser = CachedUser(context: moc)
+            cachedUser.fromUser(user)
+            // cachedUser.loadFriends(user.friends)
+        }
+        // try? moc.save()
 
     }
 
@@ -68,7 +78,9 @@ struct ContentView: View {
 
 
 struct ContentView_Previews: PreviewProvider {
+    static var dataController = DataController()
     static var previews: some View {
         ContentView()
+            .environment(\.managedObjectContext, dataController.container.viewContext)
     }
 }
