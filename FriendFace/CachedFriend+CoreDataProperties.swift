@@ -20,6 +20,14 @@ extension CachedFriend {
     @NSManaged public var name: String?
     @NSManaged public var users: NSSet?
 
+    var wrappedName: String {
+        name ?? "Unknown"
+    }
+
+    func fromFriend(_ friend: Friend) {
+        name = friend.name
+    }
+
 }
 
 // MARK: Generated accessors for users
