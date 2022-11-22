@@ -17,13 +17,13 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView {
-            List(users, id: \.id) { user in
+            List(cachedUsers, id: \.id) { user in
                 NavigationLink(destination: UserDetail(user: user)) {
                     HStack {
                         Circle()
                             .fill(user.isActive ? .green : .red)
                             .frame(width: 10)
-                        Text(user.name)
+                        Text(user.wrappedName)
                             .font(.headline)
                     }
                 }
@@ -67,13 +67,15 @@ struct ContentView: View {
         for user in users {
             let cachedUser = CachedUser(context: moc)
             cachedUser.fromUser(user)
-            // cachedUser.loadFriends(user.friends)
+            for friend in user.friends {
+                let cachedFriend = CachedFriend(context: moc)
+                cachedFriend.fromFriend(friend)
+                cachedUser.addToFriends(cachedFriend)
+            }
         }
         // try? moc.save()
 
     }
-
-
 }
 
 
