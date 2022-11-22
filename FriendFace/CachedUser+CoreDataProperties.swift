@@ -23,7 +23,7 @@ extension CachedUser {
     @NSManaged public var age: Int16
     @NSManaged public var company: String?
     @NSManaged public var email: String?
-    @NSManaged public var id: UUID?
+    @NSManaged public var id: String?
     @NSManaged public var isActive: Bool
     @NSManaged public var name: String?
     @NSManaged public var registered: Date?
@@ -49,7 +49,23 @@ extension CachedUser {
         email ?? "Unknown"
     }
 
+    var wrappedName: String {
+        name ?? "Unknown"
+    }
+
+    var wrappedRegistered: Date {
+        registered ?? Date()
+    }
+
+    var friendsArray: [CachedFriend] {
+        let friendsSet = friends as? Set<CachedFriend> ?? []
+        return friendsSet.sorted {
+            $0.wrappedName < $1.wrappedName
+        }
+    }
+
     func fromUser(_ user: User) {
+        id = user.id
         about = user.about
         address = user.address
         age = user.age
@@ -59,13 +75,6 @@ extension CachedUser {
         name = user.name
         registered = user.registered
     }
-
-//    func loadFriends(_ friends: [Friend], moc: ) {
-//        for friend in friends {
-//            let cachedFriend = CachedFriend(context: moc)
-//            cachedFriend.name = friend.name
-//        }
-//    }
 
 }
 
